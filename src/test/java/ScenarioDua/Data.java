@@ -1,11 +1,18 @@
 package ScenarioDua;
 
+import java.util.Objects;
+
 public class Data {
 
     private String title;
     private String body;
     private Integer userId;
     private Integer id;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, body, userId, id);
+    }
 
     public Data() {
     }
@@ -47,5 +54,13 @@ public class Data {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Data data = (Data) o;
+        return Objects.equals(title, data.title) && Objects.equals(body, data.body) && Objects.equals(userId, data.userId) && Objects.equals(id, data.id);
     }
 }
