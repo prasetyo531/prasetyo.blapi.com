@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 
 import static io.restassured.RestAssured.with;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 public class ApiDua {
 
@@ -42,6 +43,8 @@ public class ApiDua {
         Response response = with().body(payload).post("/posts");
         response.getBody().prettyPrint();
 
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("posts.json"));
+
         String title = response.path("title");
         String body = response.path("body");
         Integer userId = response.path("userId");
@@ -50,9 +53,10 @@ public class ApiDua {
         // ObjectMapper instantiation
         ObjectMapper objectMapper = new ObjectMapper();
 
-        // Deserialization into the `Employee` class
+        // Deserialization into the `Posts` class
         Data data = objectMapper.readValue(payload, Data.class);
 
+        //compare by equals
         System.out.println("\tis id equals?: " + title.equals(data.getTitle()));
         System.out.println("\tis id equals?: " + body.equals(data.getBody()));
         System.out.println("\tis id equals?: " + userId.equals(data.getUserId()));
